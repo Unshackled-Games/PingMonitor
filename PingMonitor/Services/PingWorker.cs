@@ -46,7 +46,12 @@ public sealed class PingWorker
                         Timestamp: DateTimeOffset.Now,
                         Success: true,
                         RoundtripMs: reply.RoundtripTime,
-                        Error: null
+                        Error: null,
+                        ReplyStatus: reply.Status.ToString(),
+                        ReplyAddress: reply.Address?.ToString(),
+                        TimeoutMs: _opt.TimeoutMs,
+                        ExceptionType: null,
+                        ExceptionMessage: null
                     ));
                 }
                 else
@@ -57,7 +62,12 @@ public sealed class PingWorker
                         Timestamp: DateTimeOffset.Now,
                         Success: false,
                         RoundtripMs: null,
-                        Error: reply.Status.ToString()
+                        Error: reply.Status.ToString(),
+                        ReplyStatus: reply.Status.ToString(),
+                        ReplyAddress: reply.Address?.ToString(),
+                        TimeoutMs: _opt.TimeoutMs,
+                        ExceptionType: null,
+                        ExceptionMessage: null
                     ));
                 }
             }
@@ -69,7 +79,12 @@ public sealed class PingWorker
                     Timestamp: DateTimeOffset.Now,
                     Success: false,
                     RoundtripMs: null,
-                    Error: ex.GetType().Name
+                    Error: ex.GetType().Name,
+                    ReplyStatus: null,
+                    ReplyAddress: null,
+                    TimeoutMs: _opt.TimeoutMs,
+                    ExceptionType: ex.GetType().FullName,
+                    ExceptionMessage: ex.Message
                 ));
             }
 

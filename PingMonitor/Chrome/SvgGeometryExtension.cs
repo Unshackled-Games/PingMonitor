@@ -25,7 +25,7 @@ public sealed class SvgGeometryExtension : MarkupExtension
         fallbackPathData: "M4 10 A2 2 0 0 1 6 8 H18 A2 2 0 0 1 20 10 V14 A2 2 0 0 1 18 16 H6 A2 2 0 0 1 4 14 Z"));
 
     private static readonly Lazy<Geometry> Maximize = new(() => SvgGeometryLoader.LoadOrFallback(
-        assetUri: "avares://PingMonitor/Assets/square-dashed%20%281%29.svg",
+        assetUri: "avares://PingMonitor/Assets/square-dashed.svg",
         fallbackPathData: "M3 5 A2 2 0 0 1 5 3 H19 A2 2 0 0 1 21 5 V19 A2 2 0 0 1 19 21 H5 A2 2 0 0 1 3 19 Z"));
 
     private static readonly Lazy<Geometry> Topmost = new(() => SvgGeometryLoader.LoadOrFallback(

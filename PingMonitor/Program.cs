@@ -21,7 +21,6 @@ internal static class Program
     private static void ConfigureLifetime(IClassicDesktopStyleApplicationLifetime desktop)
     {
         desktop.Startup += (_, _) => ApplyBorderlessChrome(desktop.MainWindow);
-        ApplyBorderlessChrome(desktop.MainWindow);
     }
 
     private static void ApplyBorderlessChrome(Window? window)

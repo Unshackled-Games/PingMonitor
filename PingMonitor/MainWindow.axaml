@@ -11,135 +11,13 @@
         x:DataType="vm:MonitorViewModel"
         Title="Ping Monitor"
         Width="420"
-        Height="230"
+        Height="210"
         MinWidth="360"
-        MinHeight="200"
+        MinHeight="210"
         Background="Transparent"
         RequestedThemeVariant="Light"
         FontFamily="{DynamicResource CozyFont}">
 
-  <Window.Resources>
-    <!-- Cozy font: uses installed fonts if present, falls back cleanly -->
-    <FontFamily x:Key="CozyFont">Nunito, Quicksand, Segoe UI, Inter, Arial</FontFamily>
-
-    <!-- Pastel purple palette -->
-    <Color x:Key="C_WindowBg">#F2F8F3FF</Color>
-    <Color x:Key="C_CardBg">#FFFDFBFF</Color>
-    <Color x:Key="C_Accent">#B9A7FF</Color>
-    <Color x:Key="C_AccentSoft">#E9E2FF</Color>
-    <Color x:Key="C_BorderSoft">#D9D0F2</Color>
-    <Color x:Key="C_Text">#2C2336</Color>
-    <Color x:Key="C_TextSubtle">#6F647C</Color>
-    <Color x:Key="C_Ok">#7BCFAD</Color>
-    <Color x:Key="C_Fail">#FFB3BA</Color>
-
-    <SolidColorBrush x:Key="WindowBgBrush" Color="{DynamicResource C_WindowBg}" />
-    <SolidColorBrush x:Key="CardBgBrush" Color="{DynamicResource C_CardBg}" />
-    <SolidColorBrush x:Key="AccentBrush" Color="{DynamicResource C_Accent}" />
-    <SolidColorBrush x:Key="AccentSoftBrush" Color="{DynamicResource C_AccentSoft}" />
-    <SolidColorBrush x:Key="BorderSoftBrush" Color="{DynamicResource C_BorderSoft}" />
-    <SolidColorBrush x:Key="TextBrush" Color="{DynamicResource C_Text}" />
-    <SolidColorBrush x:Key="TextSubtleBrush" Color="{DynamicResource C_TextSubtle}" />
-    <SolidColorBrush x:Key="OkBrush" Color="{DynamicResource C_Ok}" />
-    <SolidColorBrush x:Key="FailBrush" Color="{DynamicResource C_Fail}" />
-  </Window.Resources>
-
-  <Window.Styles>
-    <Style Selector="TextBlock">
-      <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-    </Style>
-
-    <Style Selector="TextBlock.Title">
-      <Setter Property="FontSize" Value="18" />
-      <Setter Property="FontWeight" Value="SemiBold" />
-      <Setter Property="LetterSpacing" Value="0.2" />
-    </Style>
-
-    <Style Selector="TextBlock.Subtitle">
-      <Setter Property="FontSize" Value="12" />
-      <Setter Property="Foreground" Value="{DynamicResource TextSubtleBrush}" />
-    </Style>
-
-    <Style Selector="Button.Action">
-      <Setter Property="Background" Value="{DynamicResource AccentSoftBrush}" />
-      <Setter Property="BorderBrush" Value="{DynamicResource BorderSoftBrush}" />
-      <Setter Property="BorderThickness" Value="1" />
-      <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-      <Setter Property="FontSize" Value="12" />
-      <Setter Property="FontWeight" Value="SemiBold" />
-    </Style>
-
-    <Style Selector="Button.Action:pointerover">
-      <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
-    </Style>
-
-    <Style Selector="Button.Caption">
-      <Setter Property="Width" Value="22" />
-      <Setter Property="Height" Value="22" />
-      <Setter Property="Padding" Value="0" />
-      <Setter Property="Background" Value="Transparent" />
-      <Setter Property="BorderBrush" Value="Transparent" />
-      <Setter Property="HorizontalContentAlignment" Value="Center" />
-      <Setter Property="VerticalContentAlignment" Value="Center" />
-      <Setter Property="Focusable" Value="False" />
-    </Style>
-
-    <Style Selector="Button.Caption:pointerover">
-      <Setter Property="Background" Value="{DynamicResource AccentSoftBrush}" />
-    </Style>
-
-    <Style Selector="Button.Caption:pressed">
-      <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
-    </Style>
-
-    <Style Selector="Path.CaptionIcon">
-      <Setter Property="Stroke" Value="{DynamicResource TextSubtleBrush}" />
-    </Style>
-
-    <Style Selector="Border.Card">
-      <Setter Property="Background" Value="{DynamicResource CardBgBrush}" />
-      <Setter Property="BorderBrush" Value="{DynamicResource BorderSoftBrush}" />
-      <Setter Property="BorderThickness" Value="1" />
-      <Setter Property="CornerRadius" Value="14" />
-      <Setter Property="Padding" Value="12" />
-      <Setter Property="BoxShadow" Value="0 10 26 0 #14000000" />
-    </Style>
-
-    <Style Selector="TextBlock.CardTitle">
-      <Setter Property="FontSize" Value="13" />
-      <Setter Property="FontWeight" Value="SemiBold" />
-    </Style>
-
-    <Style Selector="TextBlock.CardHost">
-      <Setter Property="FontSize" Value="11" />
-      <Setter Property="Foreground" Value="{DynamicResource TextSubtleBrush}" />
-    </Style>
-
-    <Style Selector="TextBlock.CardValue">
-      <Setter Property="FontSize" Value="24" />
-      <Setter Property="FontWeight" Value="SemiBold" />
-      <Setter Property="Margin" Value="0,6,0,0" />
-    </Style>
-
-    <Style Selector="TextBlock.CardMeta">
-      <Setter Property="FontSize" Value="11" />
-      <Setter Property="Foreground" Value="{DynamicResource TextSubtleBrush}" />
-      <Setter Property="Margin" Value="0,6,0,0" />
-    </Style>
-
-    <Style Selector="Border.StatusPill">
-      <Setter Property="Background" Value="{DynamicResource FailBrush}" />
-      <Setter Property="CornerRadius" Value="999" />
-      <Setter Property="Padding" Value="10,4" />
-      <Setter Property="VerticalAlignment" Value="Center" />
-    </Style>
-
-    <Style Selector="TextBlock.StatusText">
-      <Setter Property="FontSize" Value="11" />
-      <Setter Property="FontWeight" Value="SemiBold" />
-      <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-    </Style>
-  </Window.Styles>
 
   <Border Background="{DynamicResource WindowBgBrush}"
           CornerRadius="18"
@@ -220,12 +98,20 @@
           </Button>
         </StackPanel>
 
-        <Button Grid.Row="1"
-                Grid.Column="1"
-                Classes="Action"
-                Padding="12,6"
-                Command="{Binding ToggleCommand}"
-                Content="{Binding IsRunning, Converter={x:Static converters:BooleanToTextConverter.Instance}}" />
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    Spacing="6"
+                    HorizontalAlignment="Right">
+          <Button Classes="Action"
+                  Padding="12,6"
+                  Command="{Binding ToggleCommand}"
+                  Content="{Binding IsRunning, Converter={x:Static converters:BooleanToTextConverter.Instance}}" />
+          <Button Classes="Action"
+                  Padding="12,6"
+                  Command="{Binding ShowHistoryCommand}"
+                  Content="History" />
+        </StackPanel>
       </Grid>
 
       <ItemsControl ItemsSource="{Binding Targets}">

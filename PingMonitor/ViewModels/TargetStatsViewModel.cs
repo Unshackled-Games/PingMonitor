@@ -8,6 +8,8 @@ namespace PingMonitor.ViewModels;
 
 public sealed class TargetStatsViewModel : INotifyPropertyChanged
 {
+    private const int MaxHistorySamples = 10_000;
+    
     public string Name { get; }
     public string Host { get; }
 
@@ -17,7 +19,8 @@ public sealed class TargetStatsViewModel : INotifyPropertyChanged
     private double? _minMs;
     private double? _maxMs;
     private DateTimeOffset? _lastAt;
-
+    private readonly List<PingSample> _history = new(MaxHistorySamples + 1);
+    
     private string _currentDisplay = "—";
     private string _status = "No data";
 
@@ -31,7 +34,8 @@ public sealed class TargetStatsViewModel : INotifyPropertyChanged
     public string CountsDisplay => $"Samples: {_total}   Success: {_success}   Fail: {_total - _success}";
     public string SummaryLine => $"Avg {AverageDisplay}  ·  Loss {LossDisplay}";
     public string RangeLine => $"Min {MinDisplay}  ·  Max {MaxDisplay}";
-
+    public IReadOnlyList<PingSample> History => _history;
+    
     public string LastUpdatedDisplay
         => _lastAt is null ? "—" : _lastAt.Value.LocalDateTime.ToString("HH:mm:ss", CultureInfo.InvariantCulture);
 
@@ -43,6 +47,7 @@ public sealed class TargetStatsViewModel : INotifyPropertyChanged
 
     public void AddSample(PingSample sample)
     {
+        AppendHistory(sample);
         _total++;
         _lastAt = sample.Timestamp;
 
@@ -71,7 +76,14 @@ public sealed class TargetStatsViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(RangeLine));
         OnPropertyChanged(nameof(LastUpdatedDisplay));
     }
-
+    
+    private void AppendHistory(PingSample sample)
+    {
+        _history.Add(sample);
+        if (_history.Count > MaxHistorySamples)
+            _history.RemoveAt(0);
+    }
+    
     public event PropertyChangedEventHandler? PropertyChanged;
     private void OnPropertyChanged([CallerMemberName] string? name = null)
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

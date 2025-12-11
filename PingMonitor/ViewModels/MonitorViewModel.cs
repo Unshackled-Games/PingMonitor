@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Avalonia.Threading;
 using Microsoft.Extensions.Configuration;
+using PingMonitor.Models;
 using PingMonitor.Services;
 
 namespace PingMonitor.ViewModels;
@@ -28,8 +30,9 @@ public sealed class MonitorViewModel : INotifyPropertyChanged, IDisposable
     public IReadOnlyList<TargetStatsViewModel> Targets { get; }
 
     public RelayCommand ToggleCommand { get; }
+    public RelayCommand ShowHistoryCommand { get; }
 
-    private MonitorViewModel(IReadOnlyList<PingTargetOptions> targets, int intervalMs)
+    private MonitorViewModel(IReadOnlyList<PingTargetOptions> targets, int intervalMs, MonitorPersistedState? initialState)
     {
         IntervalMs = intervalMs;
 
@@ -52,12 +55,15 @@ public sealed class MonitorViewModel : INotifyPropertyChanged, IDisposable
         _workers = workers.ToArray();
 
         ToggleCommand = new RelayCommand(Toggle);
+        ShowHistoryCommand = new RelayCommand(RequestHistory);
+
+        RestoreFromState(initialState);
 
         foreach (var w in _workers)
             _ = w.RunAsync(_cts.Token);
     }
 
-    public static MonitorViewModel CreateFromAppSettings()
+    public static MonitorViewModel CreateFromAppSettings(MonitorPersistedState? initialState = null)
     {
         var cfg = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -72,7 +78,7 @@ public sealed class MonitorViewModel : INotifyPropertyChanged, IDisposable
         router = router with { IntervalMs = intervalMs, TimeoutMs = timeoutMs };
         internet = internet with { IntervalMs = intervalMs, TimeoutMs = timeoutMs };
 
-        return new MonitorViewModel(new[] { router, internet }, intervalMs);
+        return new MonitorViewModel(new[] { router, internet }, intervalMs, initialState);
     }
 
     private static PingTargetOptions ReadTarget(IConfiguration cfg, string prefix, string defaultName, string defaultHost)
@@ -102,11 +108,83 @@ public sealed class MonitorViewModel : INotifyPropertyChanged, IDisposable
                 target.AddSample(sample);
         });
 
+
+    private TargetStatsViewModel? FindTargetViewModel(MonitorTargetPersistedState targetState)
+    {
+        if (!string.IsNullOrWhiteSpace(targetState.Name)
+            && _targetsByName.TryGetValue(targetState.Name, out var byName))
+        {
+            return byName;
+        }
+
+        if (!string.IsNullOrWhiteSpace(targetState.Host))
+        {
+            return Targets.FirstOrDefault(t =>
+                string.Equals(t.Host, targetState.Host, StringComparison.OrdinalIgnoreCase));
+        }
+
+        return null;
+    }
+
+    public MonitorPersistedState GetPersistedState()
+    {
+        var state = new MonitorPersistedState
+        {
+            IsRunning = IsRunning
+        };
+
+        foreach (var target in Targets)
+        {
+            var targetState = new MonitorTargetPersistedState
+            {
+                Name = target.Name,
+                Host = target.Host,
+                History = target.History
+                    .Select(PingSampleState.FromSample)
+                    .ToList()
+            };
+
+            state.Targets.Add(targetState);
+        }
+
+        return state;
+    }
+
+    private void RestoreFromState(MonitorPersistedState? state)
+    {
+        if (state is null)
+            return;
+
+        if (state.Targets is { Count: > 0 })
+        {
+            foreach (var targetState in state.Targets)
+            {
+                if (targetState is null)
+                    continue;
+
+                var vm = FindTargetViewModel(targetState);
+                if (vm is null || targetState.History is not { Count: > 0 })
+                    continue;
+
+                foreach (var sampleState in targetState.History)
+                    vm.AddSample(sampleState.ToSample());
+            }
+        }
+
+        if (state.IsRunning is false && _isRunning)
+            Toggle();
+    }
+
     public void Dispose()
     {
         _cts.Cancel();
         _cts.Dispose();
     }
+
+    public event EventHandler? ShowHistoryRequested;
+
+    private void RequestHistory()
+        => ShowHistoryRequested?.Invoke(this, EventArgs.Empty);
 
     public event PropertyChangedEventHandler? PropertyChanged;
     private void OnPropertyChanged([CallerMemberName] string? name = null)

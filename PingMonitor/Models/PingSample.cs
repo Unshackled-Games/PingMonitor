@@ -8,5 +8,10 @@ public sealed record PingSample(
     DateTimeOffset Timestamp,
     bool Success,
     double? RoundtripMs,
-    string? Error
+    string? Error,
+    string? ReplyStatus,
+    string? ReplyAddress,
+    int? TimeoutMs,
+    string? ExceptionType,
+    string? ExceptionMessage
 );
