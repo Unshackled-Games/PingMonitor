@@ -1,0 +1,26 @@
+﻿<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="PingMonitor.App">
+  <Application.Styles>
+    <FluentTheme />
+    <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+  </Application.Styles>
+
+  <!-- Easy theming knobs -->
+  <Application.Resources>
+    <Color x:Key="AccentColor">#4F8CFF</Color>
+    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
+
+    <Color x:Key="AppBg">#0E1117</Color>
+    <SolidColorBrush x:Key="AppBgBrush" Color="{StaticResource AppBg}"/>
+
+    <Color x:Key="CardBg">#161B22</Color>
+    <SolidColorBrush x:Key="CardBgBrush" Color="{StaticResource CardBg}"/>
+
+    <Color x:Key="TextPrimary">#E6EDF3</Color>
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimary}"/>
+
+    <Color x:Key="TextSecondary">#9AA4B2</Color>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondary}"/>
+  </Application.Resources>
+</Application>

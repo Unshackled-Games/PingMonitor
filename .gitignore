@@ -1,0 +1,63 @@
+# ==========================================
+# .NET / C# (SDK-style) + Rider + Avalonia
+# ==========================================
+
+# Build output
+**/bin/
+**/obj/
+**/out/
+**/artifacts/
+**/TestResults/
+
+# Publish / packaging (common)
+**/publish/
+**/*.nupkg
+**/*.snupkg
+
+# Logs / coverage
+**/*.log
+**/coverage/
+**/coverage-report/
+**/*.coverage
+**/*.coveragexml
+**/*.trx
+
+# NuGet
+packages/
+.nuget/
+
+# Visual Studio / MSBuild user-specific
+.vs/
+**/*.user
+**/*.suo
+**/*.userosscache
+**/*.sln.docstates
+**/*.vcxproj.user
+**/*.csproj.user
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+**/*.DotSettings.user
+**/*.DotSettings.user.*
+**/.fleet/
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings
+
+# OS / tooling
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editors
+.vscode/
+*.swp
+*.swo
+
+# Local secrets (only if you use them; remove if you commit these intentionally)
+**/secrets.json
+**/*appsettings.*.local.json

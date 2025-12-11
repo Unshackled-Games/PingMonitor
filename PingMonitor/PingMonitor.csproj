@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <AvaloniaVersion>11.3.9</AvaloniaVersion>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

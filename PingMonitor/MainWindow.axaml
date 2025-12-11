@@ -1,0 +1,264 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:PingMonitor.ViewModels"
+        xmlns:p="clr-namespace:Avalonia.Controls.Primitives;assembly=Avalonia.Controls"
+        xmlns:chrome="clr-namespace:PingMonitor.Chrome"
+        xmlns:converters="clr-namespace:PingMonitor.ViewModels.Converters"
+        mc:Ignorable="d"
+        x:Class="PingMonitor.MainWindow"
+        x:DataType="vm:MonitorViewModel"
+        Title="Ping Monitor"
+        Width="420"
+        Height="230"
+        MinWidth="360"
+        MinHeight="200"
+        Background="Transparent"
+        RequestedThemeVariant="Light"
+        FontFamily="{DynamicResource CozyFont}">
+
+  <Window.Resources>
+    <!-- Cozy font: uses installed fonts if present, falls back cleanly -->
+    <FontFamily x:Key="CozyFont">Nunito, Quicksand, Segoe UI, Inter, Arial</FontFamily>
+
+    <!-- Pastel purple palette -->
+    <Color x:Key="C_WindowBg">#F2F8F3FF</Color>
+    <Color x:Key="C_CardBg">#FFFDFBFF</Color>
+    <Color x:Key="C_Accent">#B9A7FF</Color>
+    <Color x:Key="C_AccentSoft">#E9E2FF</Color>
+    <Color x:Key="C_BorderSoft">#D9D0F2</Color>
+    <Color x:Key="C_Text">#2C2336</Color>
+    <Color x:Key="C_TextSubtle">#6F647C</Color>
+    <Color x:Key="C_Ok">#7BCFAD</Color>
+    <Color x:Key="C_Fail">#FFB3BA</Color>
+
+    <SolidColorBrush x:Key="WindowBgBrush" Color="{DynamicResource C_WindowBg}" />
+    <SolidColorBrush x:Key="CardBgBrush" Color="{DynamicResource C_CardBg}" />
+    <SolidColorBrush x:Key="AccentBrush" Color="{DynamicResource C_Accent}" />
+    <SolidColorBrush x:Key="AccentSoftBrush" Color="{DynamicResource C_AccentSoft}" />
+    <SolidColorBrush x:Key="BorderSoftBrush" Color="{DynamicResource C_BorderSoft}" />
+    <SolidColorBrush x:Key="TextBrush" Color="{DynamicResource C_Text}" />
+    <SolidColorBrush x:Key="TextSubtleBrush" Color="{DynamicResource C_TextSubtle}" />
+    <SolidColorBrush x:Key="OkBrush" Color="{DynamicResource C_Ok}" />
+    <SolidColorBrush x:Key="FailBrush" Color="{DynamicResource C_Fail}" />
+  </Window.Resources>
+
+  <Window.Styles>
+    <Style Selector="TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.Title">
+      <Setter Property="FontSize" Value="18" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="LetterSpacing" Value="0.2" />
+    </Style>
+
+    <Style Selector="TextBlock.Subtitle">
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="Foreground" Value="{DynamicResource TextSubtleBrush}" />
+    </Style>
+
+    <Style Selector="Button.Action">
+      <Setter Property="Background" Value="{DynamicResource AccentSoftBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource BorderSoftBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style Selector="Button.Action:pointerover">
+      <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
+    </Style>
+
+    <Style Selector="Button.Caption">
+      <Setter Property="Width" Value="22" />
+      <Setter Property="Height" Value="22" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="Focusable" Value="False" />
+    </Style>
+
+    <Style Selector="Button.Caption:pointerover">
+      <Setter Property="Background" Value="{DynamicResource AccentSoftBrush}" />
+    </Style>
+
+    <Style Selector="Button.Caption:pressed">
+      <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
+    </Style>
+
+    <Style Selector="Path.CaptionIcon">
+      <Setter Property="Stroke" Value="{DynamicResource TextSubtleBrush}" />
+    </Style>
+
+    <Style Selector="Border.Card">
+      <Setter Property="Background" Value="{DynamicResource CardBgBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource BorderSoftBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="14" />
+      <Setter Property="Padding" Value="12" />
+      <Setter Property="BoxShadow" Value="0 10 26 0 #14000000" />
+    </Style>
+
+    <Style Selector="TextBlock.CardTitle">
+      <Setter Property="FontSize" Value="13" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style Selector="TextBlock.CardHost">
+      <Setter Property="FontSize" Value="11" />
+      <Setter Property="Foreground" Value="{DynamicResource TextSubtleBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.CardValue">
+      <Setter Property="FontSize" Value="24" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Margin" Value="0,6,0,0" />
+    </Style>
+
+    <Style Selector="TextBlock.CardMeta">
+      <Setter Property="FontSize" Value="11" />
+      <Setter Property="Foreground" Value="{DynamicResource TextSubtleBrush}" />
+      <Setter Property="Margin" Value="0,6,0,0" />
+    </Style>
+
+    <Style Selector="Border.StatusPill">
+      <Setter Property="Background" Value="{DynamicResource FailBrush}" />
+      <Setter Property="CornerRadius" Value="999" />
+      <Setter Property="Padding" Value="10,4" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="TextBlock.StatusText">
+      <Setter Property="FontSize" Value="11" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+    </Style>
+  </Window.Styles>
+
+  <Border Background="{DynamicResource WindowBgBrush}"
+          CornerRadius="18"
+          Padding="14"
+          PointerPressed="DragAreaPointerPressed"
+          BoxShadow="0 14 36 0 #16000000">
+    <DockPanel LastChildFill="True">
+
+      <Grid DockPanel.Dock="Top"
+            ColumnDefinitions="*,Auto"
+            RowDefinitions="Auto,Auto"
+            Margin="0,0,0,10">
+        <StackPanel Grid.RowSpan="2"
+                    Grid.Column="0"
+                    Orientation="Vertical"
+                    Spacing="2"
+                    VerticalAlignment="Center">
+          <TextBlock Text="Ping Monitor" Classes="Title" />
+          <TextBlock Text="{Binding Subtitle}" Classes="Subtitle" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="0"
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    Spacing="2"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,0,6">
+          <Button Classes="Caption"
+                  ToolTip.Tip="Always on top"
+                  Click="TopmostClick">
+            <Viewbox Width="12" Height="12" Stretch="Uniform">
+              <Path Classes="CaptionIcon"
+                    Data="{chrome:SvgGeometry Kind=Topmost}"
+                    StrokeThickness="2"
+                    StrokeLineCap="Round"
+                    StrokeJoin="Round"
+                    Fill="Transparent" />
+            </Viewbox>
+          </Button>
+          
+          <Button Classes="Caption"
+                  ToolTip.Tip="Minimize"
+                  Click="MinimizeClick">
+            <Viewbox Width="12" Height="12" Stretch="Uniform">
+              <Path Classes="CaptionIcon"
+                    Data="{chrome:SvgGeometry Kind=Minimize}"
+                    StrokeThickness="2"
+                    StrokeLineCap="Round"
+                    StrokeJoin="Round"
+                    Fill="Transparent" />
+            </Viewbox>
+          </Button>
+
+          <Button Classes="Caption"
+                  ToolTip.Tip="Maximize / Restore"
+                  Click="MaximizeClick">
+            <Viewbox Width="12" Height="12" Stretch="Uniform">
+              <Path Classes="CaptionIcon"
+                    Data="{chrome:SvgGeometry Kind=Maximize}"
+                    StrokeThickness="2"
+                    StrokeLineCap="Round"
+                    StrokeJoin="Round"
+                    Fill="Transparent" />
+            </Viewbox>
+          </Button>
+
+          <Button Classes="Caption"
+                  ToolTip.Tip="Close"
+                  Click="CloseClick">
+            <Viewbox Width="12" Height="12" Stretch="Uniform">
+              <Path Classes="CaptionIcon"
+                    Data="{chrome:SvgGeometry Kind=Close}"
+                    StrokeThickness="2"
+                    StrokeLineCap="Round"
+                    StrokeJoin="Round"
+                    Fill="Transparent" />
+            </Viewbox>
+          </Button>
+        </StackPanel>
+
+        <Button Grid.Row="1"
+                Grid.Column="1"
+                Classes="Action"
+                Padding="12,6"
+                Command="{Binding ToggleCommand}"
+                Content="{Binding IsRunning, Converter={x:Static converters:BooleanToTextConverter.Instance}}" />
+      </Grid>
+
+      <ItemsControl ItemsSource="{Binding Targets}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <p:UniformGrid Columns="2" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:TargetStatsViewModel">
+            <Border Classes="Card" Margin="6">
+              <Grid ColumnDefinitions="*,Auto"
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                <TextBlock Text="{Binding Name}" Classes="CardTitle" />
+                <TextBlock Grid.Row="1" Text="{Binding Host}" Classes="CardHost" />
+
+                <TextBlock Grid.Row="2" Text="{Binding CurrentDisplay}" Classes="CardValue" />
+                <Border Grid.Row="2" Grid.Column="1" Classes="StatusPill" Background="{Binding Status, Converter={x:Static converters:StatusToBrushConverter.Instance}}">
+                  <TextBlock Text="{Binding Status}" Classes="StatusText" />
+                </Border>
+
+                <TextBlock Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding SummaryLine}" Classes="CardMeta" />
+                <TextBlock Grid.Row="4"
+                           Grid.ColumnSpan="2"
+                           Text="{Binding LastUpdatedDisplay, StringFormat=Updated {0}}"
+                           Classes="CardMeta" />
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+    </DockPanel>
+  </Border>
+</Window>
